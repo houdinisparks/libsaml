@@ -118,7 +118,7 @@ module Saml
       def verify_xml(message, raw_body)
         document = Xmldsig::SignedDocument.new(raw_body)
 
-        signature_valid = document.validate do |signature, data, signature_algorithm|
+        signature_valid = document.validate(nil,  Xmldsig::XSD_X509_SERIAL_FIX_FILE) do |signature, data, signature_algorithm|
           node = document.signatures.find { |s| s.signature_value == signature }.signature.at_xpath('descendant::ds:KeyName', Xmldsig::NAMESPACES)
           key_name = node.present? ? node.content : nil
 
