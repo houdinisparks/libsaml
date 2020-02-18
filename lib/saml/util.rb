@@ -114,7 +114,7 @@ module Saml
       def verify_xml(message, raw_body)
         document = Xmldsig::SignedDocument.new(raw_body)
 
-        signature_valid = document.validate do |signature, data, signature_algorithm|
+        signature_valid = document.validate(nil,  Xmldsig::XSD_X509_SERIAL_FIX_FILE) do |signature, data, signature_algorithm|
           message.provider.verify(signature_algorithm, signature, data, message.signature.key_name)
         end
 
